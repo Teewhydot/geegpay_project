@@ -2,8 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:geegpay_project/constants.dart';
 import 'package:geegpay_project/generated/assets.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +34,59 @@ class DashboardScreen extends StatelessWidget {
                 Container(
                   height: 88,
                   width: double.infinity,
-                  color: Colors.redAccent,
-                  child: const Row(),
+                  color: appBarColor,
+                  child: Row(children: [
+                    const Text(
+                      'Dashboard',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 300,
+                          child: Stack(
+                            children: [
+                              TextField(
+                                focusNode: _focusNode,
+                                decoration: InputDecoration(
+                                  hintText: '       Search',
+                                  hintStyle: const TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                  ),
+                                ),
+                              ),
+                              _focusNode.hasFocus
+                                  ? Positioned(
+                                      right: 0,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.close),
+                                        onPressed: () {
+                                          _focusNode.unfocus();
+                                        },
+                                      ),
+                                    )
+                                  : Positioned(
+                                left: 0,
+                                child: Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.circular(25.0),
+                                  ),
+                                  child: const Icon(Icons.search),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  ]),
                 ),
                 Row(
                   children: [
@@ -109,7 +173,10 @@ class Sidebar extends StatelessWidget {
             NavItems(
               imageString: Assets.assetsNotifications,
             ),
-           Image.asset(Assets.assetsThemeswitch,width: 50,)
+            Image.asset(
+              Assets.assetsThemeswitch,
+              width: 50,
+            )
           ],
         ),
       ),
